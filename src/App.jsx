@@ -3,20 +3,21 @@
 // =================================================================================
 import React, { useState } from 'react';
 import { useAuth } from './context/AuthContext';
-
-// Import Pages and Components
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import IncidentReportingPage from './pages/IncidentReportingPage';
+import NewsPage from './pages/NewsPage';
+import DataPage from './pages/DataPage';
+import FundraisingPage from './pages/FundraisingPage';
+import AdminPage from './pages/AdminPage';
+
 
 export default function App() {
     const [activeSection, setActiveSection] = useState('home');
     const { isAuthenticated } = useAuth();
 
-    // Handler to navigate between pages, with a check for protected routes
     const navigateTo = (section) => {
-        // If trying to access a protected route and not authenticated, redirect to login
         if ((section === 'report' || section === 'admin') && !isAuthenticated) {
             setActiveSection('login'); 
         } else {
@@ -24,11 +25,19 @@ export default function App() {
         }
     };
     
-    // Renders the component corresponding to the active section
+    // This function now renders the correct page based on the active section
     const renderActiveSection = () => {
         switch (activeSection) {
             case 'report':
                 return <IncidentReportingPage />;
+            case 'news':
+                return <NewsPage />;
+            case 'data':
+                return <DataPage />;
+            case 'fundraising':
+                return <FundraisingPage />;
+            case 'admin':
+                return <AdminPage />;
             case 'login':
                 return <LoginPage setActiveSection={setActiveSection} />;
             case 'home':
@@ -44,5 +53,3 @@ export default function App() {
         </div>
     );
 }
-
-

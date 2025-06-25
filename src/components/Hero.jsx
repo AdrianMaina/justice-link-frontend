@@ -4,34 +4,34 @@
 import React from 'react';
 import { Button } from './ui/Button';
 import { Card, CardContent } from './ui/Card';
-import { AlertTriangle, Eye, Heart, Shield, Scale } from 'lucide-react';
+import { AlertTriangle, Eye, Heart } from 'lucide-react';
 
 export default function Hero({ setActiveSection }) {
      return (
-        <section className="relative py-20 overflow-hidden text-white">
-            <div className="absolute inset-0 bg-gradient-to-br from-black via-red-600 to-green-700"></div>
+        <section className="relative py-20 overflow-hidden text-primary-foreground">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary via-destructive to-secondary"></div>
             <div className="absolute inset-0 bg-black opacity-30"></div>
             <div className="relative max-w-7xl mx-auto px-4">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     <div>
                         <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">JUSTICE LINK KENYA</h1>
-                        <p className="text-xl lg:text-2xl mb-4 text-green-100 font-medium">Sauti dhidi ya ukatili wa polisi Kenya</p>
-                        <p className="text-lg mb-8 text-gray-100 leading-relaxed">Jukwaa salama, linaloendeshwa na jamii ambapo wahanga na mashahidi wanaweza kuripoti matukio bila kutambulika, kuunganisha na mashirika ya haki za binadamu, na kuchangisha msaada wa haki na mageuzi Kenya.</p>
+                        <p className="text-xl lg:text-2xl mb-4 text-green-200 font-medium">Sauti dhidi ya ukatili wa polisi Kenya</p>
+                        <p className="text-lg mb-8 text-slate-200 leading-relaxed">Jukwaa salama, linaloendeshwa na jamii ambapo wahanga na mashahidi wanaweza kuripoti matukio bila kutambulika, kuunganisha na mashirika ya haki za binadamu, na kuchangisha msaada wa haki na mageuzi Kenya.</p>
                         <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                            <Button size="lg" variant="destructive" className="border-2 border-white" onClick={() => setActiveSection('report')}>
+                            <Button size="lg" variant="destructive" onClick={() => setActiveSection('report')}>
                                 <AlertTriangle className="mr-2 h-5 w-5" /> Ripoti Tukio
                             </Button>
-                            <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black" onClick={() => setActiveSection('data')}>
+                            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-primary" onClick={() => setActiveSection('data')}>
                                 <Eye className="mr-2 h-5 w-5" /> Tazama Data
                             </Button>
                         </div>
                     </div>
                     <div className="hidden lg:grid grid-cols-2 gap-4">
                         <Card className="bg-white/10 backdrop-blur-lg border-white/20">
-                            <CardContent className="p-6 text-center"><AlertTriangle className="h-12 w-12 mx-auto mb-4 text-red-400" /><h3 className="text-2xl font-bold mb-2">1,500+</h3><p className="text-green-100">Matukio Kenya</p></CardContent>
+                            <CardContent className="p-6 text-center"><AlertTriangle className="h-12 w-12 mx-auto mb-4 text-red-400" /><h3 className="text-2xl font-bold mb-2">1,500+</h3><p className="text-green-200">Matukio Kenya</p></CardContent>
                         </Card>
                         <Card className="bg-white/10 backdrop-blur-lg border-white/20">
-                            <CardContent className="p-6 text-center"><Heart className="h-12 w-12 mx-auto mb-4 text-red-400" /><h3 className="text-2xl font-bold mb-2">KSh 115M</h3><p className="text-green-100">Fedha Zilizokusanywa</p></CardContent>
+                            <CardContent className="p-6 text-center"><Heart className="h-12 w-12 mx-auto mb-4 text-red-400" /><h3 className="text-2xl font-bold mb-2">KSh 115M</h3><p className="text-green-200">Fedha Zilizokusanywa</p></CardContent>
                         </Card>
                     </div>
                 </div>

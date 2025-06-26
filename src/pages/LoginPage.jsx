@@ -1,29 +1,40 @@
 // File: src/pages/LoginPage.jsx
-// Description: The component for user login and registration.
-// =================================================================================
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Label } from '../components/ui/Label';
+import { apiService } from '../apiService';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function LoginPage({ setActiveSection }) {
     const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleStandardLogin = (e) => {
+    const handleStandardLogin = async (e) => {
         e.preventDefault();
-        console.log("Simulating login with", { email, password });
-        login({ name: email.split('@')[0] || 'User' });
-        setActiveSection('home');
+        setError('');
+        try {
+            const response = await apiService.login({ email, password });
+            login(response.user, response.token);
+            setActiveSection('home');
+        } catch (err) {
+            setError(err.message || 'Failed to login. Please check your credentials.');
+        }
     };
 
-    const handleGoogleLogin = () => {
-        console.log("Simulating Google Login");
-        login({ name: 'Google User' });
-        setActiveSection('home');
+    const handleGoogleSuccess = async (credentialResponse) => {
+        setError('');
+        try {
+            const response = await apiService.googleLogin(credentialResponse.credential);
+            login(response.user, response.token);
+            setActiveSection('home');
+        } catch (err) {
+            setError(err.message || 'Google login failed.');
+        }
     };
 
     return (
@@ -34,6 +45,7 @@ export default function LoginPage({ setActiveSection }) {
                     <CardDescription>Ingia ili uendelee kupata haki.</CardDescription>
                 </CardHeader>
                 <CardContent>
+                    {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
                     <form onSubmit={handleStandardLogin} className="space-y-4">
                         <div className="grid w-full items-center gap-1.5">
                             <Label htmlFor="email">Barua pepe</Label>
@@ -49,10 +61,16 @@ export default function LoginPage({ setActiveSection }) {
                         <div className="absolute inset-0 flex items-center"><span className="w-full border-t"/></div>
                         <div className="relative flex justify-center text-xs uppercase"><span className="bg-card px-2 text-muted-foreground">AU ENDELEA NA</span></div>
                     </div>
-                    <Button variant="outline" className="w-full" onClick={handleGoogleLogin}>
-                        <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 21.5 173.5 58.5l-65.2 64.2C335.5 97.4 294.8 80 248 80c-82.3 0-149.3 67-149.3 149.3s67 149.3 149.3 149.3c96.1 0 133.3-67.9 138-105.2H248v-85.3h236.1c2.3 12.7 3.9 26.9 3.9 41.4z"></path></svg>
-                        Ingia na Google
-                    </Button>
+                    <div className="flex justify-center">
+                        <GoogleLogin
+                            onSuccess={handleGoogleSuccess}
+                            onError={() => {
+                                console.log('Login Failed');
+                                setError('Google login failed. Please try again.');
+                            }}
+                            useOneTap
+                        />
+                    </div>
                 </CardContent>
             </Card>
         </div>

@@ -1,25 +1,32 @@
-// =================================================================================
-// File: src/components/Navigation.jsx
-// =================================================================================
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Shield, Menu, X, AlertTriangle, Globe, BarChart3, Heart, Settings } from 'lucide-react';
+import { Shield, Menu, X, AlertTriangle, Globe, BarChart3, Heart, Settings, LogIn, UserPlus } from 'lucide-react';
 import { Button } from './ui/Button';
 
 export default function Navigation({ activeSection, setActiveSection }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated, user, logout } = useAuth();
 
     const navItems = [
-        { id: 'home', label: 'Nyumbani', icon: Shield, protected: false },
-        { id: 'report', label: 'Ripoti', icon: AlertTriangle, protected: true },
-        { id: 'news', label: 'Habari', icon: Globe, protected: false },
-        { id: 'data', label: 'Takwimu', icon: BarChart3, protected: false },
-        { id: 'fundraising', label: 'Msaada', icon: Heart, protected: false },
-        { id: 'admin', label: 'Msimamizi', icon: Settings, protected: true }
+        { id: 'home', label: 'Nyumbani', icon: Shield },
+        { id: 'report', label: 'Ripoti', icon: AlertTriangle, requiresAuth: true },
+        { id: 'news', label: 'Habari', icon: Globe },
+        { id: 'data', label: 'Takwimu', icon: BarChart3 },
+        { id: 'fundraising', label: 'Msaada', icon: Heart },
+        { id: 'admin', label: 'Msimamizi', icon: Settings, requiresAuth: true, adminOnly: true }
     ];
 
-    const filteredNavItems = navItems.filter(item => !item.protected || isAuthenticated);
+    const filteredNavItems = navItems.filter(item => {
+        if (item.requiresAuth && !isAuthenticated) return false;
+        if (item.adminOnly && (!user || !user.is_admin)) return false;
+        return true;
+    });
+
+    const handleLogout = () => {
+        logout();
+        setActiveSection('home');
+        setIsMenuOpen(false);
+    };
 
     return (
         <nav className="bg-gradient-to-r from-primary via-destructive to-secondary shadow-lg sticky top-0 z-50 border-b-4 border-white">
@@ -46,10 +53,14 @@ export default function Navigation({ activeSection, setActiveSection }) {
                                 {item.label}
                             </Button>
                         ))}
-                        {!isAuthenticated ? 
-                            <Button variant="secondary" className="ml-2 bg-white text-black" onClick={() => setActiveSection('login')}>Ingia</Button> :
-                            <Button variant="destructive" className="ml-2" onClick={logout}>Toka</Button>
-                        }
+                        {!isAuthenticated ? (
+                            <>
+                                <Button variant="ghost" className="text-white hover:bg-white/20" onClick={() => setActiveSection('login')}><LogIn className="mr-2 h-4 w-4" /> Ingia</Button>
+                                <Button variant="secondary" className="bg-white text-black" onClick={() => setActiveSection('signup')}><UserPlus className="mr-2 h-4 w-4" /> Jisajili</Button>
+                            </>
+                        ) : (
+                            <Button variant="destructive" className="ml-2" onClick={handleLogout}>Toka</Button>
+                        )}
                     </div>
                     <div className="lg:hidden flex items-center">
                         <Button variant="ghost" size="sm" className="text-white hover:bg-white/20" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -71,10 +82,14 @@ export default function Navigation({ activeSection, setActiveSection }) {
                                     {item.label}
                                 </Button>
                             ))}
-                             {!isAuthenticated ? 
-                                <Button variant="secondary" className="justify-start bg-white text-black" onClick={() => {setActiveSection('login'); setIsMenuOpen(false)}}>Ingia</Button> :
-                                <Button variant="destructive" className="justify-start" onClick={() => {logout(); setIsMenuOpen(false)}}>Toka</Button>
-                            }
+                             {!isAuthenticated ? (
+                                <>
+                                    <Button variant="ghost" className="justify-start w-full text-white" onClick={() => { setActiveSection('login'); setIsMenuOpen(false); }}><LogIn className="mr-2 h-4 w-4"/>Ingia</Button>
+                                    <Button variant="secondary" className="justify-start bg-white text-black" onClick={() => {setActiveSection('signup'); setIsMenuOpen(false)}}><UserPlus className="mr-2 h-4 w-4"/>Jisajili</Button>
+                                </>
+                             ) : (
+                                <Button variant="destructive" className="justify-start" onClick={handleLogout}>Toka</Button>
+                            )}
                         </div>
                     </div>
                 )}

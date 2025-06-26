@@ -1,17 +1,15 @@
 // File: src/App.jsx
-// Description: The root component that manages routing and page views.
-// =================================================================================
 import React, { useState } from 'react';
 import { useAuth } from './context/AuthContext';
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage'; // Import new page
 import IncidentReportingPage from './pages/IncidentReportingPage';
 import NewsPage from './pages/NewsPage';
 import DataPage from './pages/DataPage';
 import FundraisingPage from './pages/FundraisingPage';
 import AdminPage from './pages/AdminPage';
-
 
 export default function App() {
     const [activeSection, setActiveSection] = useState('home');
@@ -25,7 +23,6 @@ export default function App() {
         }
     };
     
-    // This function now renders the correct page based on the active section
     const renderActiveSection = () => {
         switch (activeSection) {
             case 'report':
@@ -40,6 +37,8 @@ export default function App() {
                 return <AdminPage />;
             case 'login':
                 return <LoginPage setActiveSection={setActiveSection} />;
+            case 'signup': // Add new case for signup
+                return <SignupPage setActiveSection={setActiveSection} />;
             case 'home':
             default:
                 return <HomePage setActiveSection={navigateTo} />;

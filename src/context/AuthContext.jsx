@@ -1,32 +1,50 @@
 // File: src/context/AuthContext.jsx
-// Description: Provides authentication state to the entire application.
-// =================================================================================
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
+    const [token, setToken] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const login = (userData) => {
-        setIsAuthenticated(true);
+    const login = useCallback((userData, authToken) => {
         setUser(userData);
-        // In a real app, you would store the JWT here (e.g., localStorage)
-    };
+        setToken(authToken);
+        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('token', authToken);
+    }, []);
 
-    const logout = () => {
-        setIsAuthenticated(false);
+    const logout = useCallback(() => {
         setUser(null);
-        // In a real app, you would clear the JWT from localStorage
-    };
+        setToken(null);
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+    }, []);
+    
+    useEffect(() => {
+        try {
+            const storedToken = localStorage.getItem('token');
+            const storedUser = JSON.parse(localStorage.getItem('user'));
+            if (storedToken && storedUser) {
+                // Here you might want to add token validation logic
+                // For now, we'll just re-hydrate the state
+                setToken(storedToken);
+                setUser(storedUser);
+            }
+        } catch (error) {
+            console.error("Failed to parse auth data from localStorage", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
-    const value = { isAuthenticated, user, login, logout };
 
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+    const value = { isAuthenticated: !!token, user, token, login, logout, isLoading };
+
+    return <AuthContext.Provider value={value}>{!isLoading && children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
     return useContext(AuthContext);
 }
-

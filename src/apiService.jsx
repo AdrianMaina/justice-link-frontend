@@ -58,4 +58,5 @@ export const apiService = {
     // Admin
     getAllUsers: () => request('/admin/users'),
     verifyReport: (id) => request(`/admin/reports/verify/${id}`, 'PUT'),
+    rejectReport: (id) => request(`/admin/reports/reject/${id}`, 'PUT'), // New function
 };

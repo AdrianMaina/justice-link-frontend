@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Shield, Menu, X, AlertTriangle, Globe, Settings, LogIn, UserPlus } from 'lucide-react';
+import { Shield, Menu, X, AlertTriangle, Globe, Settings, LogIn, UserPlus, FileText } from 'lucide-react';
 import { Button } from './ui/Button';
 
 export default function Navigation({ activeSection, setActiveSection }) {
@@ -9,7 +9,8 @@ export default function Navigation({ activeSection, setActiveSection }) {
 
     const navItems = [
         { id: 'home', label: 'Nyumbani', icon: Shield },
-        { id: 'report', label: 'Ripoti', icon: AlertTriangle, requiresAuth: true },
+        { id: 'report', label: 'Ripoti Tukio', icon: AlertTriangle, requiresAuth: true },
+        { id: 'my-reports', label: 'Ripoti Zangu', icon: FileText, requiresAuth: true },
         { id: 'news', label: 'Habari', icon: Globe },
         { id: 'admin', label: 'Msimamizi', icon: Settings, requiresAuth: true, adminOnly: true }
     ];

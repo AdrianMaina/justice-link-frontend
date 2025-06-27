@@ -1,9 +1,10 @@
 // =================================================================================
+// =================================================================================
 // File: src/components/Hero.jsx
 import React, { useState, useEffect } from 'react';
 import { Button } from './ui/Button';
 import { Card, CardContent } from './ui/Card';
-import { AlertTriangle, Eye, Heart, Loader2 } from 'lucide-react';
+import { AlertTriangle, Loader2 } from 'lucide-react';
 import { apiService } from '../apiService';
 
 export default function Hero({ setActiveSection }) {
@@ -39,24 +40,14 @@ export default function Hero({ setActiveSection }) {
                             <Button size="lg" variant="destructive" onClick={() => setActiveSection('report')}>
                                 <AlertTriangle className="mr-2 h-5 w-5" /> Ripoti Tukio
                             </Button>
-                            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-primary" onClick={() => setActiveSection('data')}>
-                                <Eye className="mr-2 h-5 w-5" /> Tazama Data
-                            </Button>
                         </div>
                     </div>
-                    <div className="hidden lg:grid grid-cols-2 gap-4">
+                    <div className="hidden lg:flex justify-center">
                         <Card className="bg-white/10 backdrop-blur-lg border-white/20">
                             <CardContent className="p-6 text-center">
                                 <AlertTriangle className="h-12 w-12 mx-auto mb-4 text-red-400" />
                                 <h3 className="text-2xl font-bold mb-2">{isLoading ? <Loader2 className="animate-spin mx-auto"/> : `${stats.reportsCount}+`}</h3>
                                 <p className="text-green-200">Matukio Kenya</p>
-                            </CardContent>
-                        </Card>
-                        <Card className="bg-white/10 backdrop-blur-lg border-white/20">
-                            <CardContent className="p-6 text-center">
-                                <Heart className="h-12 w-12 mx-auto mb-4 text-red-400" />
-                                <h3 className="text-2xl font-bold mb-2">KSh 11.5M</h3>
-                                <p className="text-green-200">Fedha Zilizokusanywa</p>
                             </CardContent>
                         </Card>
                     </div>

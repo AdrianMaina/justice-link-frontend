@@ -37,6 +37,11 @@ export default function LoginPage({ setActiveSection }) {
         }
     };
 
+    const handleGoogleError = (err) => {
+        console.error("Google Login Error:", err);
+        setError('Google login failed. See the browser console for details.');
+    };
+
     return (
         <div className="py-12 px-4 max-w-md mx-auto">
             <Card>
@@ -64,10 +69,7 @@ export default function LoginPage({ setActiveSection }) {
                     <div className="flex justify-center">
                         <GoogleLogin
                             onSuccess={handleGoogleSuccess}
-                            onError={() => {
-                                console.log('Login Failed');
-                                setError('Google login failed. Please try again.');
-                            }}
+                            onError={handleGoogleError}
                             useOneTap
                         />
                     </div>

@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import IncidentReportingPage from './pages/IncidentReportingPage';
+import MyReportsPage from './pages/MyReportsPage';
 import NewsPage from './pages/NewsPage';
 import AdminPage from './pages/AdminPage';
 
@@ -13,7 +14,7 @@ export default function App() {
     const { isAuthenticated } = useAuth();
 
     const navigateTo = (section) => {
-        if ((section === 'report' || section === 'admin') && !isAuthenticated) {
+        if ((section === 'report' || section === 'admin' || section === 'my-reports') && !isAuthenticated) {
             setActiveSection('login'); 
         } else {
             setActiveSection(section);
@@ -24,6 +25,8 @@ export default function App() {
         switch (activeSection) {
             case 'report':
                 return <IncidentReportingPage />;
+            case 'my-reports':
+                return <MyReportsPage />;
             case 'news':
                 return <NewsPage />;
             case 'admin':

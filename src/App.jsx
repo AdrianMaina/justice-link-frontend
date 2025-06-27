@@ -1,14 +1,11 @@
-// File: src/App.jsx
 import React, { useState } from 'react';
 import { useAuth } from './context/AuthContext';
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage'; // Import new page
+import SignupPage from './pages/SignupPage';
 import IncidentReportingPage from './pages/IncidentReportingPage';
 import NewsPage from './pages/NewsPage';
-import DataPage from './pages/DataPage';
-import FundraisingPage from './pages/FundraisingPage';
 import AdminPage from './pages/AdminPage';
 
 export default function App() {
@@ -29,15 +26,11 @@ export default function App() {
                 return <IncidentReportingPage />;
             case 'news':
                 return <NewsPage />;
-            case 'data':
-                return <DataPage />;
-            case 'fundraising':
-                return <FundraisingPage />;
             case 'admin':
                 return <AdminPage />;
             case 'login':
                 return <LoginPage setActiveSection={setActiveSection} />;
-            case 'signup': // Add new case for signup
+            case 'signup':
                 return <SignupPage setActiveSection={setActiveSection} />;
             case 'home':
             default:

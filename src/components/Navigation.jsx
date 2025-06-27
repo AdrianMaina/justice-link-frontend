@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Shield, Menu, X, AlertTriangle, Globe, BarChart3, Heart, Settings, LogIn, UserPlus } from 'lucide-react';
+import { Shield, Menu, X, AlertTriangle, Globe, Settings, LogIn, UserPlus } from 'lucide-react';
 import { Button } from './ui/Button';
 
 export default function Navigation({ activeSection, setActiveSection }) {
@@ -11,8 +11,6 @@ export default function Navigation({ activeSection, setActiveSection }) {
         { id: 'home', label: 'Nyumbani', icon: Shield },
         { id: 'report', label: 'Ripoti', icon: AlertTriangle, requiresAuth: true },
         { id: 'news', label: 'Habari', icon: Globe },
-        { id: 'data', label: 'Takwimu', icon: BarChart3 },
-        { id: 'fundraising', label: 'Msaada', icon: Heart },
         { id: 'admin', label: 'Msimamizi', icon: Settings, requiresAuth: true, adminOnly: true }
     ];
 
